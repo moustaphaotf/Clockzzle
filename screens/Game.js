@@ -71,7 +71,7 @@ const Game = () => {
       <RadioButton 
         options={[
           {key: 'analog', text: "Analog"},
-          {key: 'digital', text: "Digial"},
+          {key: 'digital', text: "Digital"},
           {key: 'both', text: "Both"},
         ]}
         handleUpdate={setClockType}
