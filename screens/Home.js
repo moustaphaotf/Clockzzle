@@ -1,20 +1,31 @@
 import { AntDesign } from "@expo/vector-icons";
-import { useState } from "react";
-import { View, Text, Button, StyleSheet } from "react-native";
+import { useState, useEffect } from "react";
+import { View, Text, Button, StyleSheet, TouchableOpacity } from "react-native";
 import AnalogClock from "../components/AnalogClock";
 import DigitalClock from "../components/DigitalClock";
 import { colors } from "../global";
+import Rating from '../components/Rating';
+import { Link } from "@react-navigation/native";
 
 const Home = ({navigation}) => {
   const [time, setTime] = useState(new Date());
+  const [rate, setRate] = useState(parseInt(localStorage.getItem('totalsuccess') || 0) / parseInt(localStorage.getItem('totaltries') || 1));
+
+  useEffect(() => {
+    setRate(
+      parseInt(localStorage.getItem('totalsuccess') || 0) /
+      parseInt(localStorage.getItem('totaltries') || 1)
+    );
+  });
+
   return (
     <View style={styles.container}>
       <AntDesign style={styles.homeIcon} name="home" size={30}/>
       <Text style={styles.title}>Clockzzle</Text>
+      
       <DigitalClock 
         time={time}
         setTime={setTime}
-        update={true}
       />
       <AnalogClock
         color={colors.gray}
@@ -23,6 +34,11 @@ const Home = ({navigation}) => {
         time={time}
         setTime={setTime}
         update={true}
+      />
+      <Rating 
+        rate={rate}
+        color={colors.success}
+        style={{marginBottom: 10}}
       />
       <Text style={styles.text}>
         Learn the correct way to tell time throught games
@@ -33,7 +49,7 @@ const Home = ({navigation}) => {
           onPress={() => navigation.push("Game")}
         />
       </View>
-      <View style={styles.copyright}><Text>&copy; <a href="mailto:sumptring@gmail.com" style={{color: colors.black, textDecoration: "none"}}>sumptring@gmail.com</a></Text></View>
+      <View style={styles.copyright}><Text style={{color: colors.black}}><a href="mailto:sumptring@gmail.com" style={{color: colors.black, textDecoration: "none"}}>sumptring@gmail.com</a> &copy; january 22</Text></View>
     </View>
   );
 }
@@ -63,12 +79,13 @@ const styles = StyleSheet.create({
     width: 100,
     borderRadius: 20,
     // flex: 
-    marginBottom: 50
+    marginBottom: 30
   },
   homeIcon: {
     marginBottom: 20
   },
   copyright: {
+    marginTop: 10,
     justifyContent: "flex-end",
   }
 });
