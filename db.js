@@ -70,7 +70,12 @@ function timeToString(time){
     timeString += ' to ' + hourString
   }
 
-  return timeString;  
+  if(hourString !== "Noon" && hourString !== "Midnight"){
+    return timeString + (hours >= 12 ? " PM" : " AM");  
+  }
+  else{
+    return timeString
+  }
 }
 
 function numberToString(number){
@@ -142,4 +147,49 @@ function getValues(number)
   return [correctValue, [...firstPart, correctValue, ...lastPart]];
 }
 
-export { getValues, timeToString}
+
+
+class Question{
+  constructor(){
+    let random = Math.random();
+    this.type = (random <= 0.5) ? 'manual' : 'picker';
+    this.time = generate();
+    if(this.type === 'manual'){
+      let t = new Date(this.time)
+      t.setSeconds(0);
+      this.time = t.toISOString();
+    }
+    
+    let length = random < 0.3 ? 3 : random < 0.7 ? 4 : 5;
+    this.noises = [];
+    
+    
+    for(let i = 0; i < length - 1; i++){
+      this.noises.push(generate());
+    }
+
+    // put the correct value in between
+    let middleIndex = parseInt(this.noises.length * Math.random());
+    let firstPart = this.noises.slice(0,middleIndex)
+    let lastPart = this.noises.slice(middleIndex)
+
+    this.noises = [...firstPart, this.time, ...lastPart];
+  }
+  
+  toString(){
+    return timeToString(this.time);
+  }
+
+  check(time) {
+    let time1 = new Date(time)
+    let time2 = new Date(this.time);
+    return time1.getHours() == time2.getHours() && time1.getMinutes() == time2.getMinutes();
+  }
+
+  checkWithNoise(value) {
+    let idx = this.noises.indexOf(value);
+    return this.noises[idx] == this.time;
+  }
+};
+
+export { getValues, timeToString, Question}
