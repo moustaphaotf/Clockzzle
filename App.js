@@ -7,6 +7,7 @@ import { useFonts } from 'expo-font'
 import { StyleSheet, Text, View } from 'react-native';
 import { colors } from './global';
 
+
 const Stack = createNativeStackNavigator();
 
 export default function App() {
@@ -27,10 +28,10 @@ export default function App() {
   return (
     <NavigationContainer>
       <Stack.Navigator
-        screenOptions={{}}
+        screenOptions={{headerShown:false}}
       >
-        <Stack.Screen name="Home" component={Home} options={{headerShown:false}}/>
-        <Stack.Screen name="Game" component={Game} options={{title: "Clockzzle"}}/>
+        <Stack.Screen name="Home" component={Home} options={{title: "Clockzzle"}}/>
+        <Stack.Screen name="Game" component={Game} options={{title: "Clockzzle gameboard"}}/>
       </Stack.Navigator>
       <StatusBar style="auto"/>
     </NavigationContainer>
